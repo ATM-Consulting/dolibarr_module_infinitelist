@@ -100,6 +100,41 @@ class Actionsinfinitelist
 				        }
 				    }
 				}
+
+				function checkBottomPage() {
+
+					if($("#loadMorePageItem")) {
+						
+					    var top_of_element = $("#loadMorePageItem").offset().top;
+					    var bottom_of_element = $("#loadMorePageItem").offset().top + $("#loadMorePageItem").outerHeight();
+					    var bottom_of_screen = $(window).scrollTop() + $(window).height();
+					    var top_of_screen = $(window).scrollTop();
+
+					    if((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
+					    	$("#loadMorePageItem").remove();
+					    	current_page++;
+					    	var newUrl = "?page=" +current_page + "&" + $.param(params);
+					    	
+							$.ajax({
+								url:newUrl
+							}).done(function(html) {
+
+								$tr = $(html).find('table.liste tr.oddeven,table.liste tr.liste_total');
+
+								$table.append($tr);								
+								
+								if(current_page < maximumPage) {
+									$table.after('<div id="loadMorePageItem"><?php echo $langs->trans('LoadMore') ?></div>');
+								}
+							});
+
+				    	
+					    	    	
+
+						}
+
+					}
+				}
 				
 				$pagination = $('div.pagination');
 				var nb_page_more =$pagination.find('>ul>li>a').length;  
@@ -119,40 +154,10 @@ class Actionsinfinitelist
 					delete params["page"];
 					
 					$(window).scroll(function() {
-
-						if($("#loadMorePageItem")) {
-						
-						    var top_of_element = $("#loadMorePageItem").offset().top;
-						    var bottom_of_element = $("#loadMorePageItem").offset().top + $("#loadMorePageItem").outerHeight();
-						    var bottom_of_screen = $(window).scrollTop() + $(window).height();
-						    var top_of_screen = $(window).scrollTop();
-	
-						    if((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
-						    	$("#loadMorePageItem").remove();
-						    	current_page++;
-						    	var newUrl = "?page=" +current_page + "&" + $.param(params);
-						    	
-								$.ajax({
-									url:newUrl
-								}).done(function(html) {
-	
-									$tr = $(html).find('table.liste tr.oddeven');
-	
-									$table.append($tr);								
-									
-									if(current_page < maximumPage) {
-										$table.after('<div id="loadMorePageItem"><?php echo $langs->trans('LoadMore') ?></div>');
-									}
-								});
-	
-					    	
-						    	    	
-	
-							}
-
-						}
-					   
+						checkBottomPage();
 					});
+
+					checkBottomPage()
 					
 				}				
 				
