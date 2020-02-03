@@ -97,7 +97,7 @@ class modinfinitelist extends DolibarrModules
 		$this->dirs = array();
 
 		// Config pages. Put here list of php page, stored into infinitelist/admin directory, to use to setup module.
-		$this->config_page_url = array("infinitelist_setup.php@infinitelist");
+		$this->config_page_url = array(); // "infinitelist_setup.php@infinitelist" disabled actually no conf
 
 		// Dependencies
 		$this->hidden = false;			// A condition to hide module
@@ -250,7 +250,7 @@ class modinfinitelist extends DolibarrModules
 	function init($options='')
 	{
 		$sql = array();
-		
+
 		define('INC_FROM_DOLIBARR',true);
 
 		dol_include_once('/infinitelist/config.php');
