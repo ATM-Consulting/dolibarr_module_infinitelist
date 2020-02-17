@@ -49,10 +49,10 @@ class Actionsinfinitelist
 	public function __construct()
 	{
 	}
-	
+
 	function doActions($parameters, &$object, &$action, $hookmanager)
 	{
-		
+
 		if (strpos($parameters['context'],'list' ) !==false)
 		{
 			/*
@@ -60,8 +60,8 @@ class Actionsinfinitelist
 			$conf->dol_optimize_smallscreen = 999999;
 			*/
 		}
-	
-		
+
+
 	}
 	/**
 	 * Overloading the doActions function : replacing the parent's function with the one below
@@ -74,11 +74,11 @@ class Actionsinfinitelist
 	 */
 	function printFieldListOption($parameters, &$object, &$action, $hookmanager)
 	{
-		
+
 		if (strpos($parameters['context'],'list' ) !==false)
 		{
 			global $langs;
-		
+
 			?>
 			<script type="text/javascript" src="<?php echo dol_buildpath('/infinitelist/js/purl.js', 1)?>"></script>
 			<script type="text/javascript">
@@ -87,7 +87,7 @@ class Actionsinfinitelist
 
 					var sURL = url.split('?');
 					sPageURL = sURL[1];
-					
+
 				    var sURLVariables = sPageURL.split('&'),
 				    sParameterName,
 				    i;
@@ -103,8 +103,8 @@ class Actionsinfinitelist
 
 				function checkBottomPage() {
 
-					if($("#loadMorePageItem")) {
-						
+					if($("#loadMorePageItem").length) {
+
 					    var top_of_element = $("#loadMorePageItem").offset().top;
 					    var bottom_of_element = $("#loadMorePageItem").offset().top + $("#loadMorePageItem").outerHeight();
 					    var bottom_of_screen = $(window).scrollTop() + $(window).height();
@@ -114,58 +114,58 @@ class Actionsinfinitelist
 					    	$("#loadMorePageItem").remove();
 					    	current_page++;
 					    	var newUrl = "?page=" +current_page + "&" + $.param(params);
-					    	
+
 							$.ajax({
 								url:newUrl
 							}).done(function(html) {
 
 								$tr = $(html).find('table.liste tr.oddeven,table.liste tr.liste_total');
 
-								$table.append($tr);								
-								
+								$table.append($tr);
+
 								if(current_page < maximumPage) {
 									$table.after('<div id="loadMorePageItem"><?php echo $langs->trans('LoadMore') ?></div>');
 								}
 							});
 
-				    	
-					    	    	
+
+
 
 						}
 
 					}
 				}
-				
+
 				$pagination = $('div.pagination');
-				var nb_page_more =$pagination.find('>ul>li>a').length;  
+				var nb_page_more =$pagination.find('>ul>li.pagination>a:not(.paginationnext)').length;
 				if(nb_page_more>0) {
 					var $table = $('table.liste');
 					$table.after('<div id="loadMorePageItem"><?php echo $langs->trans('LoadMore') ?></div>');
 					var current_page = 0;
-					$pagination.find('.paginationnext').remove();
-					$pagination.hide();
+					var base_url = $pagination.find('>ul li.pagination a:not(.paginationnext):last').attr('href');
 
-					var base_url = $pagination.find('>ul a:last').attr('href');
-					
+					$pagination.find('.paginationnext').remove();
+					$pagination.find('>ul li.pagination').hide();
+
 					var maximumPage = getUrlParameter(base_url,'page');
 
 					var parsedUrl = $.url(base_url);
 					var params = parsedUrl.param();
 					delete params["page"];
-					
+
 					$(window).scroll(function() {
 						checkBottomPage();
 					});
 
 					checkBottomPage()
-					
-				}				
-				
+
+				}
+
 			});
-			</script><?php 
-			
+			</script><?php
+
 		}
 
-		
+
 	}
 }
