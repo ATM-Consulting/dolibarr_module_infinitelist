@@ -1,4 +1,3 @@
-# CHANGELOG CAMPAIGN FOR <a href="https://www.dolibarr.org">DOLIBARR ERP CRM</a>
 
 
 ## NOT RELEASED
